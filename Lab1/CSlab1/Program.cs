@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CSlab1;
-/*//1
+//1
 CaesarCipher c = new CaesarCipher();
 String text = Console.ReadLine();
 int s = 3;
@@ -9,7 +9,7 @@ var encryptedMessage = c.encryptMessage(text, s);
 Console.WriteLine("Text : " + text);
 Console.WriteLine("Shift : " + s);
 Console.WriteLine("Encrypt: " + encryptedMessage);
-Console.WriteLine("Decrypt: " + c.decryptMessage(encryptedMessage.ToString(), s));*/
+Console.WriteLine("Decrypt: " + c.decryptMessage(encryptedMessage.ToString(), s));
 
 
 //2
@@ -25,8 +25,8 @@ Console.WriteLine("Decrypt: {0}", cc.Decrypt(encryptedText, secretKey));
 Console.ReadLine();
 
 
-/*//3
-//передаем в конструктор класса буквы русского алфавита
+//3
+
 var cipher = new VigenereCipher("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 Console.Write("Input text: ");
 var inputText = Console.ReadLine().ToUpper();
@@ -35,7 +35,7 @@ var password = Console.ReadLine().ToUpper();
 var encryptedText1 = cipher.Encrypt(inputText, password);
 Console.WriteLine("Encypt: {0}", encryptedText1);
 Console.WriteLine("Decrypt: {0}", cipher.Decrypt(encryptedText1, password));
-Console.ReadLine();*/
+Console.ReadLine();
 
 //4
 var plaintext = "playfair".ToCharArray();
