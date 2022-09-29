@@ -471,8 +471,17 @@ public static class ChangeString
 
 
 ## Screenshots
+<b>Caesar cipher with substitution key 3:</b>
+<img width="187" alt="image" src="https://user-images.githubusercontent.com/78650694/192967866-e3c4c47d-4a6a-4ace-8434-b854310d653c.png">
 
+<b>Caesar cipher with substitution key 3 and new alphabet beginning with "CHIPER":</b>
+<img width="341" alt="image" src="https://user-images.githubusercontent.com/78650694/192968626-3939bd81-947c-402c-a5fe-33cfb973e70b.png">
 
+<b>Vigenere cipher, keyword used "VIGENERE"</b>
+<img width="341" alt="image" src="https://user-images.githubusercontent.com/78650694/192969315-24b5cc54-14f1-4c8a-895f-fe3bc5db9979.png">
+
+<b>Playfair cipher, keyword used "chiper"</b>
+<img width="202" alt="image" src="https://user-images.githubusercontent.com/78650694/192969966-1d20113e-0a90-44d2-a07e-2e50591126b8.png">
 
 ## Conclusions
 
