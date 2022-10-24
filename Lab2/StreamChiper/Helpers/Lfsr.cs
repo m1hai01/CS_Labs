@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LAB2CS
+namespace Lab2
 {
-    internal class Lfsr
+    public class Lfsr
     {
         public List<int> Register { get; set; }
         public int LastBit { get; set; }

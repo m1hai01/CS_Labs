@@ -1,19 +1,39 @@
-﻿namespace LAB2CS;
-
+﻿using Lab2;
+using Lab2.BlockCipher;
 public static class Program
-{ 
+{
     private static string? _input = "";
-    public static StreamCipher streamCipher { get; set; } = new();
+    public static AesStreamCipher streamCipher { get; set; } = new();
 
     public static void Main(string[] args)
     {
-        while (true)
+        //while (true)
+        //{
+        //    _input = Console.ReadLine();
+
+        //    Print("A5/1 Stream", true);
+        //    Print("A5/1 Stream", false);
+        //}
+
+        var key = "blockchp";
+        var text = "Cryptography consists a part of the science known as Cryptology.";
+
+        Console.WriteLine($"Message to be encrypted: {text}");
+        var blockCipher = new DesBlockCipher(key);
+        var blocks = blockCipher.Encrypt(text);
+        foreach (var block in blocks)
         {
-            _input = Console.ReadLine();
-            
-            Print("A5/1 Stream", true);
-            Print("A5/1 Stream", false);
+            Console.WriteLine(block + ' ');
         }
+
+        Console.WriteLine();
+
+        blocks = blockCipher.Decrypt(blocks);
+        foreach (var t in blocks)
+        {
+            Console.WriteLine(t);
+        }
+
     }
 
     private static void Print(string name, bool isEncryption)
@@ -40,8 +60,6 @@ public static class Program
             }
         }
 
-        
-        
         if (isEncryption)
             encryptedText = streamCipher.Encrypt(inputText);
         else

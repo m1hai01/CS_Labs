@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LAB2CS.Helpers;
+using Lab2.Helpers;
 
-namespace LAB2CS
+namespace Lab2
 {
-     public class StreamCipher : ICipher
+     public class AesStreamCipher : ICipher
     {
         private List<int> _sessionKey { get; set; } = new(64);
         private List<int> _frameKey { get; set; } = new(22);
@@ -18,7 +18,7 @@ namespace LAB2CS
         private Random _rnd { get; set; } = new();
 
         
-        public StreamCipher()
+        public AesStreamCipher()
         {
             // initialize  registers 
             _LfsrNr1 = new Lfsr(19, 8, new List<int>() { 13, 16, 17, 18 });
@@ -39,30 +39,27 @@ namespace LAB2CS
             }
 
             //1Cycle64
-            //In order to ignore incorrect clocking, all three registers are clocked 64 times(xor operation)(clocking bit)
-            //The 64 - bit session key's key bits are sequentially XORed with each register's feedback in concurrently(inner xor)
+            // all three registers are clocked 64 times(xor operation)
+            //The 64 - bit session key's key bits are sequentially XORed with each register's result
             _LfsrNr1.XOR(_sessionKey);
             _LfsrNr2.XOR(_sessionKey);
             _LfsrNr3.XOR(_sessionKey);
 
             //2Cycle22
-            //The 22 repetitions of clocking(xor operation) for all three registers ignores incorrect timing(clocking bit)
-            //Each register's feedback is sequentially XORed with the key bits of the 22-bit frame key (inner xor)
+            //The 22 repetitions  ignores incorrect timing
+            // register result is  XORed with  frame key 
             _LfsrNr1.XOR(_frameKey);
             _LfsrNr2.XOR(_frameKey);
             _LfsrNr3.XOR(_frameKey);
 
 
             //3Cycle100
-            // Registers are timed 100 times using erroneous timing 
-            //Registers having an inner xor that has the majority bit's value as the clocking bit
+            // Registers are timed 100 times 
             for (int i = 0; i < 100; i++)
             {
-               //Following the majority rule, irregular clocking
+               //Following the majority rule
                //The clocking bits of all three registers are used to determine the majority bit.
-               //The register is clocked if its clocking bit matches its majority bit(inner xor)
-
-                int majorityBit = Majority();
+               int majorityBit = Majority();
                 if (_LfsrNr1.Register[_LfsrNr1.ClockingBit] == majorityBit)
                 {
                     _LfsrNr1.XOR();
@@ -80,7 +77,6 @@ namespace LAB2CS
 
             //4Cycle228
             //Majority bit rule is used to clock registers 228 times with irregular timing,
-            //but the output of each register is XORed to create a key stream that is 228 bits long.
             for (int i = 0; i < 228; i++)
             {
                 
@@ -143,24 +139,24 @@ namespace LAB2CS
             
             var binaryMessage = Converter.ConvertTextToBinary(message);
 
-            // encrypt with xor  between binary message and secure key 
+            // encrypt the binary message using 
             for (var i = 0; i < binaryMessage.Count; i++)
             {
                 var letter = binaryMessage[i];
-                // when  binary message is greater than secure key,
-                //  through each bit of the key from the beginning
+                // case when the length of binary message is greater than the length of secure key,
+                // then start going through each bit of the key from the beginning
                 if (streamKeyIndex >= _streamKey.Length)
                 {
                     streamKeyIndex = 0;
                 }
 
-                //  xor operation
+                // perform xor operation between binary message and secure key 
                 var encryptedLetter = letter ^ int.Parse(_streamKey[streamKeyIndex++].ToString());
                 // add encrypted bit
                 encryptedBinaryMessage.Add(encryptedLetter);
             }
 
-            //  binary encrypted message -> plain text
+            // convert binary encrypted message into plain text
             var encryptedMessage = Converter.BinaryToText(encryptedBinaryMessage);
 
             return encryptedMessage;
@@ -175,24 +171,24 @@ namespace LAB2CS
             
             var binaryMessage = Converter.ConvertTextToBinary(message);
 
-            // decrypt encrypted binary message with  xor through secure key
+            // decrypt the encrypted binary message using xor 
             for (var i = 0; i < binaryMessage.Count; i++)
             {
                 var letter = binaryMessage[i];
-                //  when binary message is greater than  secure key,
-                // then start going through each bit of the key from the beginning
+                
+                // start going through each bit of the key from the beginning
                 if (streamKeyIndex >= _streamKey.Length)
                 {
                     streamKeyIndex = 0;
                 }
 
-                //xor
+                // perform xor operation between encrypted binary message and secure key bits
                 var symbolDecrypted = letter ^ int.Parse(_streamKey[streamKeyIndex++].ToString());
                 // add decrypted bit
                 binaryMessageDecrypt.Add(symbolDecrypted);
             }
 
-            //  binary decrypted message -> plain text
+            // convert binary decrypted message into plain text
             var encryptedMessage = Converter.BinaryToText(binaryMessageDecrypt);
 
             return encryptedMessage;
